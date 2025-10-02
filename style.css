@@ -1,0 +1,31 @@
+body {
+    text-align: center;
+    background: #111;
+    color: #fff;
+    font-family: Arial, sans-serif;
+}
+
+.game-area {
+    width: 400px;
+    height: 400px;
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: repeat(20, 20px);
+    grid-template-rows: repeat(20, 20px);
+    background: #222;
+    border: 2px solid #fff;
+}
+
+.cell {
+    width: 20px;
+    height: 20px;
+}
+
+.snake {
+    background: lime;
+}
+
+.coin {
+    background: gold;
+    border-radius: 50%;
+}
