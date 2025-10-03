@@ -54,10 +54,32 @@ function moveSnake () {
     else if (direction === "LEFT") head -= 1
     else if (direction === "RIGHT") head +=1
 
+    if ( 
+        head < 0 || head >= 400 ||
+        (direction === "LEFT" && head % 20 === 19) ||
+        (direction === "RIGHT" && head % 20 === 0) ||
+        snake.includes(head)
+    ) {
+        alert ("Game Over! Final Score:" + score)
+        location.reload()
+        return
+    }
+    
     snake.unshift(head)
-    snake.pop()
+
+    if (head === coin) {
+        score++;
+        scoreDisplay.textContent = score
+
+        cells[coin].classList.remove("coin")
+        coinSpawn();
+    } else {
+        snake.pop()
+    }
 
     drawSnake();
+
 }
 
 setInterval(moveSnake, 200)
+
