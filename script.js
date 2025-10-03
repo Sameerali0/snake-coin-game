@@ -31,3 +31,33 @@ function coinSpawn () {
 
 drawSnake();
 coinSpawn();
+
+let direction = "RIGHT"
+
+document.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowUp" && direction !== "DOWN") {
+        direction = "UP";
+    } else if (e.key === "ArrowDown" && direction !== "UP") {
+        direction = "DOWN";
+    } else if (e.key === "ArrowLeft" && direction !== "RIGHT") {
+        direction = "LEFT";
+    } else if (e.key === "ArrowRight" && direction !== "LEFT") {
+        direction = "RIGHT";
+    }
+})
+
+function moveSnake () {
+    let head = snake [0]
+
+    if ( direction  === "UP") head -= 20
+    else if (direction === "DOWN") head += 20
+    else if (direction === "LEFT") head -= 1
+    else if (direction === "RIGHT") head +=1
+
+    snake.unshift(head)
+    snake.pop()
+
+    drawSnake();
+}
+
+setInterval(moveSnake, 200)
