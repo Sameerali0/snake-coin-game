@@ -46,6 +46,13 @@ document.addEventListener("keydown", (e) => {
     }
 })
 
+let game;
+
+function startGame() {
+    game = setInterval(moveSnake, 200)
+
+}
+
 function moveSnake () {
     let head = snake [0]
 
@@ -60,6 +67,7 @@ function moveSnake () {
         (direction === "RIGHT" && head % 20 === 0) ||
         snake.includes(head)
     ) {
+        clearInterval(game)
         alert ("Game Over! Final Score:" + score)
         location.reload()
         return
@@ -81,5 +89,4 @@ function moveSnake () {
 
 }
 
-setInterval(moveSnake, 200)
-
+startGame();
