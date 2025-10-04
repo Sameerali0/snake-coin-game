@@ -29,3 +29,15 @@ body {
     background: gold;
     border-radius: 50%;
 }
+
+.controls {
+    margin-top: 10px;
+    text-align: center;
+}
+
+button {
+    padding: 8px 15px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}

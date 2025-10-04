@@ -53,6 +53,11 @@ function startGame() {
 
 }
 
+function pauseGame() {
+    clearInterval(game)
+    game = null;
+}
+
 function moveSnake () {
     let head = snake [0]
 
@@ -89,4 +94,20 @@ function moveSnake () {
 
 }
 
-startGame();
+// startGame();
+
+const startBtn = document.getElementById("startBtn")
+const restartBtn = document.getElementById("restartBtn")
+
+startBtn.addEventListener("click", () => {
+    if (!game) {
+        startGame()
+    }
+})
+
+restartBtn.addEventListener("click", () => {
+    location.reload()
+})
+
+pauseBtn.addEventListener("click", pauseGame)
+
