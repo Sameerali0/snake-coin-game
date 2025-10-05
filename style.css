@@ -1,53 +1,115 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     text-align: center;
     background: url("images/background.png");
-    background-color: black;
+    background-color: #000;
     color: #fff;
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
+    padding: 10px 15px;
 }
 
-.game-board {
-    width: 700px;
-    height: 450px;
-    margin: 20px auto;
-    display: grid;
-    gap: 2px;
-    padding: 10px;
-    grid-template-columns: repeat(20, 30px);
-    grid-template-rows: repeat(20, 30px);
-    background: #222;
-    border: 3px solid #fff;
+h1 {
+    font-size: 48px;
+    color: #7CFC00;
+    text-shadow: -3px 3px 2px #fff;
+    margin: 20px 0;
 }
 
-.score {
+.game {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.level { 
+    width: 200px;
+    border: 2px solid #7CFC00;
+    background-color: white; 
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.level h1 {
+    font-weight: bold;
+    color: #7CFC00;
+    font-size: 30px;
+}
+
+.level button {
+    background-color: #7CFC00;
+    color: white;
+    font-weight: bold;
     font-size: 20px;
-    margin-bottom: 15px;
+    border-radius: 8px;
+    padding: 10px 0;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.level button:hover {
+    background-color: #41db22;
 }
 
 canvas {
-    border: 3px solid rgb(98, 163, 37);
-    background: white;
+    border: 3px solid #7CFC00;
+    background-color: #fff;
     display: block;
-    margin: 20px auto;
     border-radius: 15px;
 }
 
-.controls {
-    margin-top: 10px;
+.score-gameover {
+    width: 200px;
+    border: 2px solid #7CFC00;
+    background-color: white;
+    color: #7CFC00;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.score {
+    display: flex;
+    align-items: center;
     text-align: center;
+    gap: 5px;
 }
 
-button {
-    padding: 8px 15px;
-    margin: 5px;
-    border: none;
-    border-radius: 5px;
-    background: #555;
-    color: #fff;
-    font-size: 16px;
+.score-gameover h2 {
+    margin: 0;
+    font-size: 30px;
+}
+
+.controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.controls button {
+    background-color: #7CFC00;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    font-size: 25px;
+    padding: 10px 20px;
     cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid #fff;
 }
 
-button:hover {
-    background: #777;
+.controls button:hover {
+    background: #41db22;
 }

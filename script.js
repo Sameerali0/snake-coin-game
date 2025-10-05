@@ -112,7 +112,7 @@ function moveSnake() {
 
     if(head.x === coin.x && head.y === coin.y) {
         score++;
-        scoreDisplay.textContent = "score:" + score;
+        scoreDisplay.querySelector("#scoreValue").textContent = score;
         coinSpawn();
     } else {
         snake.pop();
@@ -134,24 +134,39 @@ document.addEventListener("keydown", (e) => {
     }
 })
 
+let selectedSpeed = 200;
 
 const startBtn = document.getElementById("startBtn")
 const restartBtn = document.getElementById("restartBtn")
 const pauseBtn = document.getElementById("pauseBtn")
+const levelButtons = document.querySelectorAll(".level button")
+
+levelButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+        let level = btn.textContent.toLowerCase();
+        if(level === "medium") selectedSpeed = 150;
+        else if(level === "hard") selectedSpeed = 100;
+        else selectedSpeed = 200;
+
+        levelButtons.forEach(b => b.style.backgroundColor = "");
+        btn.style.backgroundColor = "lightgreen";
+    })
+});
 
 startBtn.addEventListener("click", () => {
     if (!game) {
         if (document.getElementById("gameOver").style.display === "block") {
             document.getElementById("gameOver").style.display = "none";
             score = 0;
-            scoreDisplay.textContent = "Score: " + score;
+            document.getElementById("scoreValue").textContent = score;
             snake = [{x: 5, y: 5}];
             direction = "RIGHT";
             pauseBtn.style.display = "inline-block";
             pauseBtn.textContent = "Pause";
         }
         coinSpawn();
-        game = setInterval(moveSnake, 200)
+        drawSnake();
+        game = setInterval(moveSnake, selectedSpeed)
     }
 })
 
@@ -167,7 +182,7 @@ pauseBtn.addEventListener("click", ()=> {
         game = null;
         pauseBtn.textContent = "Resume";
     } else {
-        game = setInterval(moveSnake, 200)
+        game = setInterval(moveSnake, selectedSpeed)
         pauseBtn.textContent = "Pause";
     }
 })

@@ -8,9 +8,25 @@
 </head>
 <body>
     <h1> Snake Coin Game</h1>
-    <canvas id="gameCanvas" width="750" height="380"></canvas>
-    <h2 class="score" id="score">Score: 0</h2>
-    <h2 id="gameOver" style="display:none; color:red;">Game Over!</h2>
+
+    <div class="game">
+        <div class="level">
+            <h1>SELECT THE LEVEL</h1>
+            <button>Normal</button>
+            <button>Medium</button>
+            <button>Hard</button>
+        </div>
+
+        <canvas id="gameCanvas" width="750" height="380"></canvas>
+
+        <div class="score-gameover">
+            <h2 class="score" id="score">Score:
+                <span id="scoreValue">0</span> 
+                <img id="scoreCoin" src="images/coin.png" alt="coin" style="width:44px; height:44px; vertical-align:middle;  margin-left:1px;">  
+            </h2>
+            <h2 id="gameOver" style="display:none; color:red;">Game Over!</h2>
+        </div>
+    </div>    
 
     <div class="controls">
         <button id="startBtn">start</button>
