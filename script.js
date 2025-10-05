@@ -1,10 +1,10 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const scoreDisplay = document.getElementById("score");
-
-let score = 0;
-let coin = null;
-let snake = [{x: 5, y: 5}];
+const startBtn = document.getElementById("startBtn");
+const restartBtn = document.getElementById("restartBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const levelButtons = document.querySelectorAll(".level button");
 
 const cellSize = 30;
 const rows = Math.floor(canvas.height / cellSize);
@@ -18,10 +18,15 @@ const coinImg = new Image();
 headImg.src = "images/snakeHead.png";
 bodyImg.src = "images/snakeBody.png";     
 tailImg.src = "images/SnakeTail.png";     
-coinImg.src = "images/coin.png"
+coinImg.src = "images/coin.png";
 
+let score = 0;
+let coin = null;
+let snake = [{x: 5, y: 5}];
 let game;
 let direction = "RIGHT";
+let selectedSpeed = 200;
+
 
 function coinSpawn () {
     do {
@@ -29,9 +34,19 @@ function coinSpawn () {
             x: Math.floor(Math.random() * cols),
             y: Math.floor(Math.random() * rows)
         }
+    } while (snake.some(segment => segment.x === coin.x && segment.y === coin.y))        
+}
 
-    } while (snake.some(segment => segment.x === coin.x && segment.y === coin.y))
-        
+function drawCoin() {
+    if (coin) {
+        let size = cellSize * 1.5;
+        ctx.drawImage(
+            coinImg,
+            coin.x * cellSize + (cellSize - size) / 2,
+            coin.y * cellSize + (cellSize - size) / 2,
+            size, size
+        );
+    }
 }
 
 function getDirection(from, to) {
@@ -43,48 +58,40 @@ function getDirection(from, to) {
 
 function drawHead(x, y, dir) {
     ctx.save();
-    ctx.translate(x * cellSize + cellSize / 2, y * cellSize + cellSize / 2)
-    if (dir === "UP") ctx.rotate(-Math.PI / 2)
-    if (dir === "DOWN") ctx.rotate(Math.PI / 2)
-    if (dir === "LEFT") ctx.rotate(Math.PI)
-    ctx.drawImage(headImg, -cellSize / 2, -cellSize / 2, cellSize, cellSize)
+    ctx.translate(x * cellSize + cellSize / 2, y * cellSize + cellSize / 2);
+    if (dir === "UP") ctx.rotate(-Math.PI / 2);
+    if (dir === "DOWN") ctx.rotate(Math.PI / 2);
+    if (dir === "LEFT") ctx.rotate(Math.PI);
+    ctx.drawImage(headImg, -cellSize / 2, -cellSize / 2, cellSize, cellSize);
     ctx.restore();
 }
 
 function drawTail(x, y, dir) {
     ctx.save();
-    ctx.translate(x * cellSize + cellSize / 2, y * cellSize + cellSize / 2)
-    if (dir === "UP") ctx.rotate(-Math.PI / 2)
-    if (dir === "DOWN") ctx.rotate(Math.PI / 2)
-    if (dir === "LEFT") ctx.rotate(Math.PI)
-    ctx.drawImage(tailImg, -cellSize / 2, -cellSize / 2, cellSize, cellSize)
+    ctx.translate(x * cellSize + cellSize / 2, y * cellSize + cellSize / 2);
+    if (dir === "UP") ctx.rotate(-Math.PI / 2);
+    if (dir === "DOWN") ctx.rotate(Math.PI / 2);
+    if (dir === "LEFT") ctx.rotate(Math.PI);
+    ctx.drawImage(tailImg, -cellSize / 2, -cellSize / 2, cellSize, cellSize);
     ctx.restore();
 }
 
 function drawSnake () {
-    ctx.clearRect(0,0, canvas.width, canvas.height)
+    ctx.clearRect(0,0, canvas.width, canvas.height);
 
-    if(coin) {
-        let size = cellSize * 1.5;
-        ctx.drawImage(
-            coinImg, 
-            coin.x * cellSize + (cellSize - size) / 2,
-            coin.y * cellSize + (cellSize - size) / 2,
-            size, size
-        )
-    }
+    drawCoin();
 
     drawHead(snake[0].x, snake[0].y, direction);
 
     for (let i = 1; i < snake.length - 1; i++) {
         let curr = snake[i];
-        ctx.drawImage(bodyImg, curr.x * cellSize, curr.y * cellSize, cellSize, cellSize)
+        ctx.drawImage(bodyImg, curr.x * cellSize, curr.y * cellSize, cellSize, cellSize);
     }
 
     if (snake.length > 1) {
-        let tail = snake[snake.length - 1]
-        let beforeTail = snake[snake.length - 2]
-        let tailDir = getDirection(beforeTail, tail)
+        let tail = snake[snake.length - 1];
+        let beforeTail = snake[snake.length - 2];
+        let tailDir = getDirection(beforeTail, tail);
         drawTail(tail.x, tail.y, tailDir);
     }
 }
@@ -98,9 +105,10 @@ function moveSnake() {
     if(direction === "RIGHT") head.x += 1;
 
     if (
-        head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows ||
-        snake.some(seg => seg.x === head.x && seg.y === head.y))
-        {
+        head.x < 0 || head.x >= cols ||
+        head.y < 0 || head.y >= rows ||
+        snake.some(seg => seg.x === head.x && seg.y === head.y)
+    ) {
         clearInterval(game);
         game = null;
         document.getElementById("gameOver").style.display = "block";
@@ -121,6 +129,19 @@ function moveSnake() {
     drawSnake();
 }
 
+function resetGame() {
+    score = 0;
+    scoreDisplay.querySelector("#scoreValue").textContent = score;
+    snake = [{x: 5, y: 5}];
+    direction = "RIGHT";
+    document.getElementById("gameOver").style.display = "none";
+    pauseBtn.style.display = "inline-block";
+    pauseBtn.textContent = "Pause";
+    coinSpawn();
+    drawSnake();
+    clearInterval(game);
+    game = setInterval(moveSnake, selectedSpeed);
+}
 
 document.addEventListener("keydown", (e) => {
     if (e.key === "ArrowUp" && direction !== "DOWN") {
@@ -132,14 +153,7 @@ document.addEventListener("keydown", (e) => {
     } else if (e.key === "ArrowRight" && direction !== "LEFT") {
         direction = "RIGHT";
     }
-})
-
-let selectedSpeed = 200;
-
-const startBtn = document.getElementById("startBtn")
-const restartBtn = document.getElementById("restartBtn")
-const pauseBtn = document.getElementById("pauseBtn")
-const levelButtons = document.querySelectorAll(".level button")
+});
 
 levelButtons.forEach(btn => {
     btn.addEventListener("click", () => {
@@ -150,39 +164,30 @@ levelButtons.forEach(btn => {
 
         levelButtons.forEach(b => b.style.backgroundColor = "");
         btn.style.backgroundColor = "lightgreen";
-    })
+    });
 });
 
 startBtn.addEventListener("click", () => {
     if (!game) {
         if (document.getElementById("gameOver").style.display === "block") {
-            document.getElementById("gameOver").style.display = "none";
-            score = 0;
-            document.getElementById("scoreValue").textContent = score;
-            snake = [{x: 5, y: 5}];
-            direction = "RIGHT";
-            pauseBtn.style.display = "inline-block";
-            pauseBtn.textContent = "Pause";
+            resetGame();
+        } else{
+            coinSpawn();
+            drawSnake();
+            game = setInterval(moveSnake, selectedSpeed);
         }
-        coinSpawn();
-        drawSnake();
-        game = setInterval(moveSnake, selectedSpeed)
     }
-})
+});
 
-restartBtn.addEventListener("click", () => {
-    pauseBtn.style.display = "inline-block";
-    pauseBtn.textContent = "Pause";
-    location.reload();
-})
+restartBtn.addEventListener("click", resetGame);
 
 pauseBtn.addEventListener("click", ()=> {
     if (game) {
-        clearInterval(game)
+        clearInterval(game);
         game = null;
         pauseBtn.textContent = "Resume";
     } else {
-        game = setInterval(moveSnake, selectedSpeed)
+        game = setInterval(moveSnake, selectedSpeed);
         pauseBtn.textContent = "Pause";
     }
-})
+});
