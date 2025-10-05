@@ -4,8 +4,8 @@ const scoreDisplay = document.getElementById("score");
 
 let score = 0;
 let coin = null;
-
 let snake = [{x: 5, y: 5}];
+
 const cellSize = 30;
 const rows = Math.floor(canvas.height / cellSize);
 const cols =  Math.floor(canvas.width / cellSize);
@@ -89,13 +89,6 @@ function drawSnake () {
     }
 }
 
-    // snake.forEach(segment => {
-    //     ctx.drawImage(snakeImg, segment.x * cellSize,
-    //          segment.y * cellSize, cellSize, cellSize)
-    // });
-    
-
-
 function moveSnake() {
     let head = {...snake[0]};
 
@@ -104,12 +97,14 @@ function moveSnake() {
     if(direction === "LEFT") head.x -= 1;
     if(direction === "RIGHT") head.x += 1;
 
-    if
-    (head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows ||
-       snake.some(seg => seg.x === head.x && seg.y === head.y))
+    if (
+        head.x < 0 || head.x >= cols || head.y < 0 || head.y >= rows ||
+        snake.some(seg => seg.x === head.x && seg.y === head.y))
         {
         clearInterval(game);
+        game = null;
         document.getElementById("gameOver").style.display = "block";
+        pauseBtn.style.display = "none";
         return;
     }
 
@@ -125,7 +120,6 @@ function moveSnake() {
 
     drawSnake();
 }
-
 
 
 document.addEventListener("keydown", (e) => {
@@ -147,12 +141,24 @@ const pauseBtn = document.getElementById("pauseBtn")
 
 startBtn.addEventListener("click", () => {
     if (!game) {
+        if (document.getElementById("gameOver").style.display === "block") {
+            document.getElementById("gameOver").style.display = "none";
+            score = 0;
+            scoreDisplay.textContent = "Score: " + score;
+            snake = [{x: 5, y: 5}];
+            direction = "RIGHT";
+            pauseBtn.style.display = "inline-block";
+            pauseBtn.textContent = "Pause";
+        }
+        coinSpawn();
         game = setInterval(moveSnake, 200)
     }
 })
 
 restartBtn.addEventListener("click", () => {
-    location.reload()
+    pauseBtn.style.display = "inline-block";
+    pauseBtn.textContent = "Pause";
+    location.reload();
 })
 
 pauseBtn.addEventListener("click", ()=> {
@@ -165,6 +171,3 @@ pauseBtn.addEventListener("click", ()=> {
         pauseBtn.textContent = "Pause";
     }
 })
-
-coinSpawn();
-drawSnake();
