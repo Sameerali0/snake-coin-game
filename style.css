@@ -24,7 +24,8 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
+    padding-left: 10px;
 }
 
 .level { 
@@ -36,6 +37,7 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-left: 10px;
 }
 
 .level h1 {
@@ -68,7 +70,7 @@ canvas {
 }
 
 .score-gameover {
-    width: 200px;
+    width: 275px;
     border: 2px solid #7CFC00;
     background-color: white;
     color: #7CFC00;
@@ -88,7 +90,10 @@ canvas {
 
 .score-gameover h2 {
     margin: 0;
-    font-size: 30px;
+}
+
+.gameOver{
+    font-size: 40px;
 }
 
 .controls {

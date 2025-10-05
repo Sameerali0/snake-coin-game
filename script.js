@@ -21,12 +21,17 @@ tailImg.src = "images/SnakeTail.png";
 coinImg.src = "images/coin.png";
 
 let score = 0;
+let highScore = localStorage.getItem("snakeHighScore") 
+    ? parseInt(localStorage.getItem("snakeHighScore")) 
+    : 0;
+
 let coin = null;
 let snake = [{x: 5, y: 5}];
 let game;
 let direction = "RIGHT";
 let selectedSpeed = 200;
 
+document.getElementById("highScoreValue").textContent = highScore;
 
 function coinSpawn () {
     do {
@@ -121,6 +126,13 @@ function moveSnake() {
     if(head.x === coin.x && head.y === coin.y) {
         score++;
         scoreDisplay.querySelector("#scoreValue").textContent = score;
+
+         if (score > highScore) {
+            highScore = score;
+            localStorage.setItem("snakeHighScore", highScore);
+            document.getElementById("highScoreValue").textContent = highScore;
+        }
+
         coinSpawn();
     } else {
         snake.pop();
