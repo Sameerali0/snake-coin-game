@@ -6,14 +6,18 @@ let score = 0;
 let coin = null;
 
 let snake = [{x: 5, y: 5}];
-const cellSize = 30;
+const cellSize = 40;
 const rows = canvas.height / cellSize;
 const cols =  canvas.width / cellSize;
 
-const snakeImg = new Image()
-snakeImg.src = "images/snake.png"
+const headImg = new Image();
+const bodyImg = new Image();
+const tailImg = new Image();
+const coinImg = new Image();
 
-const coinImg = new Image()
+headImg.src = "images/snakeHead.png";
+bodyImg.src = "images/snakeBody.png";     
+tailImg.src = "images/SnakeTail.png";     
 coinImg.src = "images/coin.png"
 
 let game;
@@ -30,19 +34,61 @@ function coinSpawn () {
         
 }
 
+function getDirection(from, to) {
+    if (from.x < to.x) return "RIGHT";
+    if (from.x > to.x) return "LEFT";
+    if (from.y < to.y) return "DOWN";
+    if (from.y > to.y) return "UP";
+}
+
+function drawHead(x, y, dir) {
+    ctx.save();
+    ctx.translate(x * cellSize + cellSize / 2, y * cellSize + cellSize / 2)
+    if (dir === "UP") ctx.rotate(-Math.PI / 2)
+    if (dir === "DOWN") ctx.rotate(Math.PI / 2)
+    if (dir === "LEFT") ctx.rotate(Math.PI)
+    ctx.drawImage(headImg, -cellSize / 2, -cellSize / 2, cellSize, cellSize)
+    ctx.restore();
+}
+
+function drawTail(x, y, dir) {
+    ctx.save();
+    ctx.translate(x * cellSize + cellSize / 2, y * cellSize + cellSize / 2)
+    if (dir === "UP") ctx.rotate(-Math.PI / 2)
+    if (dir === "DOWN") ctx.rotate(Math.PI / 2)
+    if (dir === "LEFT") ctx.rotate(Math.PI)
+    ctx.drawImage(tailImg, -cellSize / 2, -cellSize / 2, cellSize, cellSize)
+    ctx.restore();
+}
 
 function drawSnake () {
     ctx.clearRect(0,0, canvas.width, canvas.height)
 
-    if(coin) ctx.drawImage(coinImg, coin.x * cellSize,
-         coin.y * cellSize, cellSize, cellSize)
+    if(coin) {
+        ctx.drawImage(coinImg, coin.x * cellSize, coin.y * cellSize, cellSize, cellSize)
+    }
 
-    snake.forEach(segment => {
-        ctx.drawImage(snakeImg, segment.x * cellSize,
-             segment.y * cellSize, cellSize, cellSize)
-    });
-    
+    drawHead(snake[0].x, snake[0].y, direction);
+
+    for (let i = 1; i < snake.length - 1; i++) {
+        let curr = snake[i];
+        ctx.drawImage(bodyImg, curr.x * cellSize, curr.y * cellSize, cellSize, cellSize)
+    }
+
+    if (snake.length > 1) {
+        let tail = snake[snake.length - 1]
+        let beforeTail = snake[snake.length - 2]
+        let tailDir = getDirection(beforeTail, tail)
+        drawTail(tail.x, tail.y, tailDir);
+    }
 }
+
+    // snake.forEach(segment => {
+    //     ctx.drawImage(snakeImg, segment.x * cellSize,
+    //          segment.y * cellSize, cellSize, cellSize)
+    // });
+    
+
 
 function moveSnake() {
     let head = {...snake[0]};
@@ -57,7 +103,7 @@ function moveSnake() {
        snake.some(seg => seg.x === head.x && seg.y === head.y))
         {
         clearInterval(game);
-        alert("Game Over! Score: " + score);
+        document.getElementById("gameOver").style.display = "block";
         return;
     }
 
@@ -104,8 +150,14 @@ restartBtn.addEventListener("click", () => {
 })
 
 pauseBtn.addEventListener("click", ()=> {
-    clearInterval(game);
-    game = null;
+    if (game) {
+        clearInterval(game)
+        game = null;
+        pauseBtn.textContent = "Resume";
+    } else {
+        game = setInterval(moveSnake, 200)
+        pauseBtn.textContent = "Pause";
+    }
 })
 
 coinSpawn();
