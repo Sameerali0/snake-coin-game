@@ -6,9 +6,9 @@ let score = 0;
 let coin = null;
 
 let snake = [{x: 5, y: 5}];
-const cellSize = 40;
-const rows = canvas.height / cellSize;
-const cols =  canvas.width / cellSize;
+const cellSize = 30;
+const rows = Math.floor(canvas.height / cellSize);
+const cols =  Math.floor(canvas.width / cellSize);
 
 const headImg = new Image();
 const bodyImg = new Image();
@@ -65,7 +65,13 @@ function drawSnake () {
     ctx.clearRect(0,0, canvas.width, canvas.height)
 
     if(coin) {
-        ctx.drawImage(coinImg, coin.x * cellSize, coin.y * cellSize, cellSize, cellSize)
+        let size = cellSize * 1.5;
+        ctx.drawImage(
+            coinImg, 
+            coin.x * cellSize + (cellSize - size) / 2,
+            coin.y * cellSize + (cellSize - size) / 2,
+            size, size
+        )
     }
 
     drawHead(snake[0].x, snake[0].y, direction);
@@ -111,7 +117,7 @@ function moveSnake() {
 
     if(head.x === coin.x && head.y === coin.y) {
         score++;
-        scoreDisplay.textContent = score;
+        scoreDisplay.textContent = "score:" + score;
         coinSpawn();
     } else {
         snake.pop();
