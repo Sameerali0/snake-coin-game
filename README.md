@@ -1,10 +1,11 @@
 # Snake Coin Game 
 
-This is a simple snake game where the snake moves on the board and eats coins.
-When the snake eats a coin, the score increases and the snake grows longer.
-The game ends if the snake hits the wall or itself.
+This is a classic Snake Coin Game where the snake moves around the board, collects coins to increase the score, and grows longer with each coin. The highest score is saved using localStorage and shown along with a coin, while different levels (Normal, Medium, Hard) change the snake speed. The snake is controlled using the **Arrow Keys (↑ ↓ ← →)**, and the game ends when the snake hits the wall or itself. It also includes controls to **Start**, **Pause/Resume**, and **Restart** the game.
 
 ## Technologies Used
 - HTML
 - CSS
 - JavaScript
+
+## 🎥 Demo
+https://github.com/user-attachments/assets/5de9feba-e233-4fb3-b608-9c3d7dc651a4
