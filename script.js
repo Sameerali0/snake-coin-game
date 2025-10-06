@@ -123,7 +123,7 @@ function moveSnake() {
 
     snake.unshift(head);
 
-    if(head.x === coin.x && head.y === coin.y) {
+    if(coin && head.x === coin.x && head.y === coin.y) {
         score++;
         scoreDisplay.querySelector("#scoreValue").textContent = score;
 
