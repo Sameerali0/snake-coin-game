@@ -17,7 +17,7 @@ const coinImg = new Image();
 
 headImg.src = "images/snakeHead.png";
 bodyImg.src = "images/snakeBody.png";     
-tailImg.src = "images/SnakeTail.png";     
+tailImg.src = "images/snakeTail.png";     
 coinImg.src = "images/coin.png";
 
 let score = 0;
